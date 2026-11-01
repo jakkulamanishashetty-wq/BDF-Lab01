@@ -1,33 +1,51 @@
+
 const express = require('express');
+const os = require('os');
 
 const app = express();
 
-// Home route
+// Home Route
 app.get('/', (req, res) => {
-    res.status(200).send('Welcome to Node.js and Express Server');
+    res.status(200).send(
+        '<h1>Welcome to Node.js and Express Server</h1><p>Home Page</p>'
+    );
 });
 
-// About route
+// About Route
 app.get('/about', (req, res) => {
     res.status(200).json({
         name: 'Manisha',
-        section: 'AI-ML 2B'
+        section: 'AI-ML 2B',
+        project: 'BDF Lab 1 - Node.js and Express'
     });
 });
 
-// Time route
+// Time Route
 app.get('/time', (req, res) => {
-    res.status(200).send(new Date().toString());
+    res.status(200).send(
+        `<h1>Current Date and Time</h1><p>${new Date()}</p>`
+    );
 });
 
-// 404 route
+// Server Route
+app.get('/server', (req, res) => {
+    res.status(200).send(`
+        <h1>Server Information</h1>
+        <p>Platform: ${os.platform()}</p>
+        <p>Architecture: ${os.arch()}</p>
+        <p>Hostname: ${os.hostname()}</p>
+    `);
+});
+
+// Error Route
+app.get('/error', (req, res) => {
+    res.status(404).send('<h1>404 - Page Not Found</h1>');
+});
+
+// Handle Unknown Routes
 app.use((req, res) => {
-    res.status(404).send('404 - Page Not Found');
+    res.status(404).send('<h1>404 - Route Not Found</h1>');
 });
 
-// Start server
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-    console.log(`Express server running on port ${PORT}`);
-});
+// Export Express Application
+module.exports = app;
